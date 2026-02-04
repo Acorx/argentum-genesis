@@ -1,3 +1,5 @@
+mod vibe_engine;
+
 use tauri::Manager;
 use serde::{Serialize, Deserialize};
 use std::path::PathBuf;
@@ -27,9 +29,27 @@ fn write_file(path: String, is_internal: bool, content: String) -> Result<(), St
     fs::write(full_path, content).map_err(|e| e.to_string())
 }
 
+// Commande pour lister les fichiers
+#[tauri::command]
+fn list_files(is_internal: bool) -> Result<Vec<String>, String> {
+    vibe_engine::list_files(is_internal)
+}
+
+// Commande pour rechercher dans le WORKSPACE
+#[tauri::command]
+fn search_in_workspace(query: String) -> Result<Vec<vibe_engine::SearchResult>, String> {
+    vibe_engine::search_in_workspace(&query)
+}
+
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![read_file, write_file])
+        .invoke_handler(tauri::generate_handler![
+            read_file,
+            write_file,
+            list_files,
+            search_in_workspace,
+            vibe_engine::send_to_mistral
+        ])
         .run(tauri::generate_context!())
         .expect("Erreur lors du démarrage de l'application");
 }
