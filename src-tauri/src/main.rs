@@ -41,6 +41,12 @@ fn search_in_workspace(query: String) -> Result<Vec<vibe_engine::SearchResult>, 
     vibe_engine::search_in_workspace(&query)
 }
 
+// Commande pour analyser un fichier avec Tree-sitter
+#[tauri::command]
+fn parse_with_tree_sitter(file_path: String, language: String) -> Result<(), String> {
+    vibe_engine::parse_with_tree_sitter(&file_path, &language)
+}
+
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
@@ -48,6 +54,7 @@ fn main() {
             write_file,
             list_files,
             search_in_workspace,
+            parse_with_tree_sitter,
             vibe_engine::send_to_mistral
         ])
         .run(tauri::generate_context!())
