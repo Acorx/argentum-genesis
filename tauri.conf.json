@@ -1,0 +1,42 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+  "build": {
+    "beforeBuildCommand": "npm run build",
+    "beforeDevCommand": "npm run start",
+    "devPath": "http://localhost:3000",
+    "distDir": "../build",
+    "withGlobalTauri": true
+  },
+  "package": {
+    "productName": "Argentum Genesis",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": {
+        "all": false,
+        "open": true
+      }
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all"
+    },
+    "security": {
+      "csp": "default-src blob: self; script-src blob: self;"
+    },
+    "updater": {
+      "active": false
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "resizable": true,
+        "title": "Argentum Genesis",
+        "width": 1024,
+        "height": 768
+      }
+    ]
+  }
+}
